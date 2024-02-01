@@ -17,7 +17,11 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 const mongo_url=process.env.MONGO_URL;
 const salt=bcrypt.genSaltSync(10);
-mongoose.connect(mongo_url);
+try{mongoose.connect(mongo_url);}
+catch(error){
+  console.log(error)
+}
+
 app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
@@ -110,7 +114,7 @@ app.get('/logout',(req,res)=>{
   
 })
 
-const server=app.listen(4000,()=>{
+const server=app.listen(process.env.PORT,()=>{
     console.log(`port:4000 running ${process.env.CLIENT_URL}`);
 })
 
